@@ -2,7 +2,7 @@ name: Update Subscription
 
 on:
   schedule:
-    - cron: '0 3 * * *' # 每天UTC时间3点
+    - cron: '0 23 * * *'  # 每天UTC时间23点，即北京时间早上7点
   workflow_dispatch:
   push:
 
