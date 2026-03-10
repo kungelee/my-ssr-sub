@@ -27,14 +27,19 @@ jobs:
           fi
 
       - name: Commit and push if changed
+        env:
+          # 显式设置远程仓库URL，并使用 secret 进行认证
+          REPO_URL: https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add subscribe.txt
           timestamp=$(date -u)
+          # 检查是否有文件变更
           if git diff-index --quiet HEAD; then
             echo "No changes to commit."
           else
             git commit -m "Auto-update subscription at ${timestamp}"
-            git push "https://${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git"
+            # 使用上面定义的 REPO_URL 进行推送
+            git push "${REPO_URL}" HEAD:main
           fi
