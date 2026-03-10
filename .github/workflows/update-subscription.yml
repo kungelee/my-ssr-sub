@@ -27,13 +27,4 @@ jobs:
             echo "Failed to fetch subscription." && exit 1
           fi
 
-      - name: Commit and push if changed
-        run: |
-          git add subscribe.txt
-          timestamp=$(date -u)
-          if git diff-index --quiet HEAD; then
-            echo "No changes to commit."
-          else
-            git commit -m "Auto-update subscription at ${timestamp}"
-            git push "https://${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git" main
-          fi
+      
