@@ -2,29 +2,21 @@ name: Update Subscription
 
 on:
   schedule:
-    - cron: '0 23 * * *'  # 每天UTC时间23点，即北京时间早上7点
+    - cron: '0 0 * * *' # 每天UTC时间0点，即北京时间早上8点
   workflow_dispatch:
-  push:
 
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up git configuration
+      - name: Download subscription file
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-
-      - name: Update subscription file
-        run: |
+          # 使用 curl 获取最新的订阅内容，并保存为 subscribe.txt
           curl -s -L "https://rss.main.hitun.io/link/sQrHTGf1JdLgJKoS?mu=1" > subscribe.txt
+          
+          # 检查文件是否成功获取内容
           if [ -s subscribe.txt ]; then
             echo "Subscription updated successfully."
           else
             echo "Failed to fetch subscription." && exit 1
           fi
-
-      
